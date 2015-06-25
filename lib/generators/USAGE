@@ -1,0 +1,14 @@
+Description:
+  generate a role migration and set the user
+Usage:
+  rails generate role_making NAME [ROLE_CNAME] [options]
+Example:
+  rails generate role_making user
+
+  This will create:
+    db/migrate/role_making_role_create.rb
+    app/models/role.rb
+    add "role_making" to user.rb
+
+
+

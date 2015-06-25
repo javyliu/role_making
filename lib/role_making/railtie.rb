@@ -1,5 +1,5 @@
 require 'role_making'
-#require 'rails'
+require 'rails'
 
 module RoleMaking
   class Railtie < ::Rails::Railtie

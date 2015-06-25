@@ -1,4 +1,4 @@
-require 'role_making/railtie'
+require 'role_making/railtie' if defined?(Rails)
 require 'role_making/role'
 
 module RoleMaking
@@ -28,9 +28,5 @@ module RoleMaking
 
 
 
-  def role_class
-    #return self.superclass.role_class unless self.instance_variable_defined? '@role_cname'
-    self.role_cname.constantize
-  end
 
 end

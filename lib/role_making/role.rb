@@ -1,8 +1,14 @@
+require 'role_making/resourcing'
 module RoleMaking
   module Role
 
     def add_role(role_name)
-      self.roles(role_name: role_name.to_s).first_or_create
+      role = self.roles.where(name: role_name).first
+      unless role
+        role = self.class.role_cname.constantize.where(name: role_name.to_s).first_or_initialize
+        self.roles << role
+      end
+      role
     end
     alias_method :grant, :add_role
 
@@ -10,7 +16,7 @@ module RoleMaking
       role_array = if new_record?
                      self.roles.detect { |r| r.name.to_s == role_name.to_s }
                    else
-                     self.roles.exist?( name: role_name)
+                     self.roles.exists?( name: role_name)
                    end
       !!role_array
     end
@@ -26,8 +32,8 @@ module RoleMaking
     end
 
 
-    def remove_role(role_name)
-      self.roles.delete(name: roles_name)
+    def remove_role(roles_name)
+      self.roles.delete(self.class.role_cname.constantize.where(name: roles_name))
     end
 
     alias_method :revoke, :remove_role
