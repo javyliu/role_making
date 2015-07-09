@@ -6,9 +6,11 @@ module RoleMaking
       @groups = []
       @current_group = nil
       @resources = []
+      Res = Struct.new(:name,:group,:verb,:hash,:object,:behavior)
     end
 
     module ClassMethods
+      attr_reader :resources,:groups
       def group(name,&block)
         @groups << name
         @groups.uniq!
@@ -16,24 +18,18 @@ module RoleMaking
         block.call
       end
 
-      def resource(verb_or_verbs,object,&block)
+      def resource(verb_or_verbs,object,hash=nil,&block)
         raise "Need define group first" if @current_group.nil?
         group = @current_group
         behavior = block
         Array.wrap(verb_or_verbs).each do |verb|
-          add_resource(group,verb,object,behavior)
+          add_resource(group,verb,object,hash,behavior)
         end
       end
 
-      def add_resource(group,verb,object,behavior)
+      def add_resource(group,verb,object,hash,behavior)
         name = "#{verb}_#{object.to_s.underscore}"
-        resource = {
-          name: name,
-          group: group,
-          verb: verb,
-          object: object,
-          behavior: behavior
-        }
+        resource = Res.new(name,group,verb,hash,object,behavior)
         @resources << resource
       end
 
@@ -43,12 +39,16 @@ module RoleMaking
         end
       end
 
+      def each_resource(&block)
+        @resources.group_by(&:group).each(&block)
+      end
+
       def each_resources_by(group,&block)
-        @resources.find_all{|r| r[:group] == group}.each(&block)
+        @resources.find_all{|r| r.group == group}.each(&block)
       end
 
       def find_by_name(name)
-        resource = @resources.detect { |e| e[:name] == name.to_s }
+        resource = @resources.detect { |e| e.name == name.to_s }
         raise "not found resources by name: #{name}" unless resource
         resource
 
@@ -57,6 +57,4 @@ module RoleMaking
 
 
   end
-
-
 end
