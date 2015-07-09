@@ -57,15 +57,16 @@ Or install it yourself as:
     rails generate role_making user Role
   ```
 
-    This will create:
-      db/migrate/201506250001_role_making_create_roles_create.rb
-      db/migrate/201506250002_role_making_create_role_resources.rb
-      app/models/role.rb
-      app/models/role_resource.rb
-      add "role_making" to user.rb
+  This will create:
+
+    db/migrate/201506250001_role_making_create_roles_create.rb
+    db/migrate/201506250002_role_making_create_role_resources.rb
+    app/models/role.rb
+    app/models/role_resource.rb
+    add "role_making" to user.rb
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/role_making/fork )
+1. Fork it ( https://github.com/javyliu/role_making/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
