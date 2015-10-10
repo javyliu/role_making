@@ -6,7 +6,7 @@ module RoleMaking
       @groups = []
       @current_group = nil
       @resources = []
-      Res = Struct.new(:name,:group,:verb,:hash,:object,:behavior)
+      Res = Struct.new(:name,:group,:verb,:hashs,:object,:behavior)
     end
 
     module ClassMethods
@@ -18,18 +18,29 @@ module RoleMaking
         block.call
       end
 
-      def resource(verb_or_verbs,object,hash=nil,&block)
+      #need set locale yml file
+      def human_name(res_name)
+        action,res = res_name.split("@")
+        if res
+          I18n.t(["actions.#{action}","activerecord.models.#{res}"]).join
+        else
+          res_name
+        end
+      end
+
+
+      def resource(verb_or_verbs,object,hashs=nil,&block)
         raise "Need define group first" if @current_group.nil?
         group = @current_group
         behavior = block
         Array.wrap(verb_or_verbs).each do |verb|
-          add_resource(group,verb,object,hash,behavior)
+          add_resource(group,verb,object,hashs,behavior)
         end
       end
 
-      def add_resource(group,verb,object,hash,behavior)
-        name = "#{verb}_#{object.to_s.underscore}"
-        resource = Res.new(name,group,verb,hash,object,behavior)
+      def add_resource(group,verb,object,hashs,behavior)
+        name = "#{verb}@#{hashs.try(:delete,:res_name) || object.to_s.underscore}"
+        resource = Res.new(name,group,verb,hashs,object,behavior)
         @resources << resource
       end
 

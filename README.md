@@ -59,11 +59,43 @@ Or install it yourself as:
 
   This will create:
 
-    db/migrate/201506250001_role_making_create_roles_create.rb
+    db/migrate/201506250001_role_making_create_roles.rb
     db/migrate/201506250002_role_making_create_role_resources.rb
     app/models/role.rb
     app/models/role_resource.rb
     add "role_making" to user.rb
+
+  Define resource
+  ```ruby
+  #with block condition
+  group :kefu do
+    resource [:read,:update,:destroy], Post do |user,post|
+      admin != user
+    end
+
+    resource :create,User
+
+  end
+ 
+  
+  #with hash condition
+  group :kefu do
+    resource :edit, Post , type: 3 
+  end
+  
+  #if the condition need eval,you can do like this
+  group :kefu do
+    resource :edit, Post , con: {user_id: 'user.id'} 
+  end
+
+
+  #with customize resource name
+
+  group :kefu do
+    resource :edit, Post , res_name: 'Edit Post'
+  end
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/javyliu/role_making/fork )

@@ -13,7 +13,7 @@ module RoleMaking
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    default_join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
+    default_join_table = [self.to_s.tableize.gsub(/\//, "_"),self.role_table_name].sort.join("_")
     options.reverse_merge!({:role_join_table_name => default_join_table})
     self.role_join_table_name = options[:role_join_table_name]
 

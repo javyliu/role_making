@@ -30,7 +30,7 @@ Example:
   rails generate role_making user
 
     This will create:
-      db/migrate/201506250001_role_making_create_roles_create.rb
+      db/migrate/201506250001_role_making_create_roles.rb
       db/migrate/201506250002_role_making_create_role_resources.rb
       app/models/role.rb
       app/models/role_resource.rb

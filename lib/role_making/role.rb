@@ -16,7 +16,7 @@ module RoleMaking
       role_array = if new_record?
                      self.roles.detect { |r| r.name.to_s == role_name.to_s }
                    else
-                     self.roles.exists?( name: role_name)
+                     self.respond_to?(:cache_roles) ? self.cache_roles.detect{|it| it.name == role_name.to_s} : self.roles.exists?( name: role_name)
                    end
       !!role_array
     end
