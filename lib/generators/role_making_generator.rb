@@ -39,7 +39,7 @@ module RoleMaking
         <<-EOF
     ##{role_cname.classify}.all_without_reserved.each do |role|
     #  next unless user.has_role?(role.name)
-    user.roles.all_without_reserved.includes(:role_resources).each do |role|
+    user.roles.each do |role|
       role.role_resources.each do |res|
         resource = Resource.find_by_name(res.resource_name)
         if block = resource.behavior
@@ -58,8 +58,6 @@ module RoleMaking
       end
     end \n
         EOF
-
-
 
         end if behavior == :invoke
 

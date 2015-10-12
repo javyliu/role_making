@@ -13,12 +13,14 @@ module RoleMaking
     alias_method :grant, :add_role
 
     def has_role?(role_name)
-      role_array = if new_record?
-                     self.roles.detect { |r| r.name.to_s == role_name.to_s }
-                   else
-                     self.respond_to?(:cache_roles) ? self.cache_roles.detect{|it| it.name == role_name.to_s} : self.roles.exists?( name: role_name)
-                   end
-      !!role_array
+     # role_array = if new_record?
+     #                self.roles.detect { |r| r.name.to_s == role_name.to_s }
+     #              else
+     #                #self.respond_to?(:cache_roles) ? self.cache_roles.detect{|it| it.name == role_name.to_s} : self.roles.exists?( name: role_name)
+     #                self.roles.detect {||}
+     #              end
+      !!self.roles.detect { |r| r.name.to_s == role_name.to_s }
+      #!!role_array
     end
 
     def has_all_roles?(*args)
@@ -39,7 +41,8 @@ module RoleMaking
     alias_method :revoke, :remove_role
 
     def roles_name
-      self.roles.select(:name).map { |r| r.name }
+      #self.roles.select(:name).map { |r| r.name }
+      self.roles.map { |r| r.name }
     end
 
   end

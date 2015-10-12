@@ -7,6 +7,13 @@ module RoleMaking
       @current_group = nil
       @resources = []
       Res = Struct.new(:name,:group,:verb,:hashs,:object,:behavior)
+      #need set locale yml file
+      class Res
+        def human_name(scope=nil)
+          action,res = self.name.split("@")
+          I18n.t(["actions.#{action}","#{scope.nil? ? 'activerecord.models' : scope}.#{res}"]).join rescue self.name
+        end
+      end
     end
 
     module ClassMethods
@@ -18,15 +25,6 @@ module RoleMaking
         block.call
       end
 
-      #need set locale yml file
-      def human_name(res_name)
-        action,res = res_name.split("@")
-        if res
-          I18n.t(["actions.#{action}","activerecord.models.#{res}"]).join
-        else
-          res_name
-        end
-      end
 
 
       def resource(verb_or_verbs,object,hashs=nil,&block)
