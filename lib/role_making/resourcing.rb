@@ -11,7 +11,9 @@ module RoleMaking
       class Res
         def human_name(scope=nil)
           action,res = self.name.split("@")
-          I18n.t(["actions.#{action}","#{scope.nil? ? 'activerecord.models' : scope}.#{res}"]).join rescue self.name
+          ac = I18n.t("actions.#{action}",throw: true) rescue action
+          _res = I18n.t(res,scope: (scope || 'activerecord.models'),throw: true) rescue res
+          "#{ac}#{_res}"
         end
       end
     end
@@ -32,7 +34,7 @@ module RoleMaking
         group = @current_group
         behavior = block
         Array.wrap(verb_or_verbs).each do |verb|
-          add_resource(group,verb,object,hashs,behavior)
+          add_resource(group,verb,object,hashs.try(:dup),behavior)
         end
       end
 

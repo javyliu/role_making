@@ -75,6 +75,7 @@ module RoleMaking
         model_path = File.join("app", "models", "#{role_cname.underscore}.rb")
 
         join_table = "#{name.tableize}_#{role_cname.tableize}"
+        join_table = [name.tableize,role_cname.tableize].sort.join("_")
         insert_into_file(model_path,after: "ActiveRecord::Base\n") do
 <<-EOF
   RESERVED = [:admin,:guest]
