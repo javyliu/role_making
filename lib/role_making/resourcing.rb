@@ -6,13 +6,13 @@ module RoleMaking
       @groups = []
       @current_group = nil
       @resources = []
-      Res = Struct.new(:name,:group,:verb,:hashs,:object,:behavior)
+      Res = Struct.new(:name,:group,:verb,:hashs,:object,:behavior,:action_scope,:res_scope)
       #need set locale yml file
       class Res
-        def human_name(scope=nil)
+        def human_name
           action,res = self.name.split("@")
-          ac = I18n.t("actions.#{action}",throw: true) rescue action
-          _res = I18n.t(res,scope: (scope || 'activerecord.models'),throw: true) rescue res
+          ac = I18n.t(action,scope: (self.action_scope || 'actions'),throw: true) rescue action
+          _res = I18n.t(res,scope: (self.res_scope || 'activerecord.models'),throw: true) rescue res
           "#{ac}#{_res}"
         end
       end
@@ -40,7 +40,9 @@ module RoleMaking
 
       def add_resource(group,verb,object,hashs,behavior)
         name = "#{verb}@#{hashs.try(:delete,:res_name) || object.to_s.underscore}"
-        resource = Res.new(name,group,verb,hashs,object,behavior)
+        action_scope =  hashs.try(:delete,:action_scope)
+        res_scope = hashs.try(:delete,:res_scope)
+        resource = Res.new(name,group,verb,hashs,object,behavior,action_scope,res_scope)
         @resources << resource
       end
 

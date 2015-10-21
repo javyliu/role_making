@@ -42,7 +42,7 @@ module RoleMaking
 
     def roles_name
       #self.roles.select(:name).map { |r| r.name }
-      self.roles.map { |r| r.name }
+      self.roles.map { |r| r.display_name }
     end
 
   end

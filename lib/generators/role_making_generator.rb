@@ -41,7 +41,7 @@ module RoleMaking
     #  next unless user.has_role?(role.name)
     user.roles.each do |role|
       role.role_resources.each do |res|
-        resource = Resource.find_by_name(res.resource_name)
+        resource = Resource.find_by_name(res.resource_name) rescue next
         if block = resource.behavior
           can resource.verb,resource.object do |obj|
             block.call(user,obj)
@@ -51,7 +51,7 @@ module RoleMaking
             r[k] = eval(v)
             r
           end || {}
-          can resource[:verb],resource[:object],resource[:hashs].merge(eval_con)
+          can resource[:verb],resource[:object],resource[:hashs].except(:con).merge(eval_con)
         else
           can resource[:verb],resource[:object]
         end
