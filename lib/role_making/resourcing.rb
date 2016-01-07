@@ -42,6 +42,7 @@ module RoleMaking
         name = "#{verb}@#{hashs.try(:delete,:res_name) || object.to_s.underscore}"
         action_scope =  hashs.try(:delete,:action_scope)
         res_scope = hashs.try(:delete,:res_scope)
+        hashs = nil if hashs.blank?
         resource = Res.new(name,group,verb,hashs,object,behavior,action_scope,res_scope)
         @resources << resource
       end
