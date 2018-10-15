@@ -12,7 +12,7 @@ module RoleMaking
       def inject_user_class
         model_path = File.join("app", "models", "#{name.underscore}.rb")
 
-        insert_into_file(model_path,after: "ActiveRecord::Base\n") do
+        insert_into_file(model_path,after: "ApplicationRecord\n") do
           "  role_making role_cname: '#{role_cname.classify}'\n"
         end
 
@@ -76,7 +76,7 @@ module RoleMaking
 
         join_table = "#{name.tableize}_#{role_cname.tableize}"
         join_table = [name.tableize,role_cname.tableize].sort.join("_")
-        insert_into_file(model_path,after: "ActiveRecord::Base\n") do
+        insert_into_file(model_path,after: "ApplicationRecord\n") do
 <<-EOF
   RESERVED = [:admin,:guest]
   has_and_belongs_to_many :#{name.tableize}, join_table: :#{join_table}
@@ -94,7 +94,7 @@ EOF
       def inject_role_resource_class
         model_path = File.join("app", "models", "role_resource.rb")
 
-        insert_into_file(model_path,after: "ActiveRecord::Base\n") do
+        insert_into_file(model_path,after: "ApplicationRecord\n") do
 <<-EOF
   validates_uniqueness_of :resource_name, scope: :#{role_cname.underscore}_id
 
