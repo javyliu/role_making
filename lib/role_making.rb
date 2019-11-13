@@ -1,7 +1,9 @@
 require 'role_making/railtie' if defined?(Rails)
 require 'role_making/role'
+require "role_making/version"
 
 module RoleMaking
+  class Error < StandardError; end
 
   attr_accessor :role_cname, :role_join_table_name, :role_table_name
 
@@ -25,8 +27,5 @@ module RoleMaking
 
     #load_dynamic_methods if RoleMaking.dynamic_shortcuts
   end
-
-
-
 
 end
