@@ -1,3 +1,4 @@
+require 'active_support/concern'
 module RoleMaking
   module Resourcing
     extend ActiveSupport::Concern
